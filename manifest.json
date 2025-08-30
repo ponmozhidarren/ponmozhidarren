@@ -1,0 +1,22 @@
+{
+  "short_name": "LoveConnect",
+  "name": "LoveConnect",
+  "description": "A PWA for long‑distance couples to stay close.",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#F5F5DC",
+  "theme_color": "#A0826D",
+  "display": "standalone",
+  "orientation": "portrait-primary"
+}

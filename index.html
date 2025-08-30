@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" sizes="32x32" href="icons/favicon.ico" />
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
+    <title>LoveConnect</title>
+    <!-- Google Fonts for romantic typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/globals.css" />
+    <script defer src="scripts/app.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="logo">LoveConnect</h1>
+      <button id="menuToggle" class="menu-toggle">☰</button>
+      <!-- Language toggle to switch between English and German -->
+      <select id="langToggle" class="lang-toggle" title="Language" style="margin-right: var(--spacing-small);">
+        <option value="en" selected>EN</option>
+        <option value="de">DE</option>
+      </select>
+      <button id="themeToggle" class="theme-toggle" title="Toggle dark/light mode">🌙</button>
+    </header>
+    <nav id="sidebar" class="sidebar">
+      <ul>
+        <li><a href="#dashboard" data-section="dashboard" class="nav-link active">Dashboard</a></li>
+        <li><a href="#calendar" data-section="calendar" class="nav-link">Calendar</a></li>
+        <li><a href="#chat" data-section="chat" class="nav-link">Chat</a></li>
+        <li><a href="#memories" data-section="memories" class="nav-link">Memories</a></li>
+        <li><a href="#games" data-section="games" class="nav-link">Games</a></li>
+        <li><a href="#planning" data-section="planning" class="nav-link">Planning</a></li>
+        <li><a href="#interactive" data-section="interactive" class="nav-link">Interactive</a></li>
+        <li><a href="#profile" data-section="profile" class="nav-link">Profile</a></li>
+      </ul>
+    </nav>
+    <main id="mainContent" class="main-content">
+      <!-- Dashboard Section -->
+      <section id="dashboard" class="section">
+        <h2>Dashboard</h2>
+        <p id="greeting" style="font-style: italic;"></p>
+        <!-- Relationship days counter shows how long the couple has been together -->
+        <p id="relationshipDays" style="font-style: italic;"></p>
+        <!-- Daily prompt card -->
+        <div id="dailyPrompt" class="daily-prompt"></div>
+        <div class="dashboard-cards">
+          <div class="card" id="eventsCard">
+            <h3>Upcoming Events</h3>
+            <p id="eventsCount">0</p>
+          </div>
+          <div class="card" id="messagesCard">
+            <h3>Messages</h3>
+            <p id="messagesCount">0</p>
+          </div>
+          <div class="card" id="memoriesCard">
+            <h3>Memories</h3>
+            <p id="memoriesCount">0</p>
+          </div>
+          <div class="card" id="tasksCard">
+            <h3>Tasks</h3>
+            <p id="tasksCount">0</p>
+          </div>
+          <!-- Reminders card shows count of tasks due soon -->
+          <div class="card" id="remindersCard">
+            <h3>Reminders</h3>
+            <p id="remindersCount">0</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Calendar Section -->
+      <section id="calendar" class="section hidden">
+        <h2>Calendar</h2>
+        <!-- Month controls for calendar grid -->
+        <div id="calendarControls" class="calendar-controls">
+          <button id="prevMonth" title="Previous month">‹</button>
+          <span id="calendarMonth">Month Year</span>
+          <button id="nextMonth" title="Next month">›</button>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+        <div id="dayDetails" class="day-details"></div>
+        <!-- Existing quick-add form remains below for convenience -->
+        <form id="calendarForm" class="form-inline">
+          <input type="date" id="eventDate" required />
+          <select id="eventCategory">
+            <option value="green">Happy</option>
+            <option value="red">Challenge</option>
+            <option value="blue">Future</option>
+            <option value="pink">Special</option>
+            <option value="purple">Private</option>
+          </select>
+          <input type="text" id="eventTitle" placeholder="Event description" required />
+          <button type="submit">Add</button>
+        </form>
+        <!-- Filter events by category -->
+        <select id="eventFilter" class="form-inline" style="margin-bottom: var(--spacing-small);">
+          <option value="">All categories</option>
+          <option value="green">Happy</option>
+          <option value="red">Challenge</option>
+          <option value="blue">Future</option>
+          <option value="pink">Special</option>
+          <option value="purple">Private</option>
+        </select>
+        <ul id="eventsList" class="list"></ul>
+
+        <!-- Calendar import/export actions -->
+        <div class="calendar-actions">
+          <button id="exportCalendar" type="button">Export .ics</button>
+          <label for="importFile" class="import-button">Import .ics</label>
+          <input type="file" id="importFile" accept=".ics" style="display:none" />
+        </div>
+      </section>
+
+      <!-- Chat Section -->
+      <section id="chat" class="section hidden">
+        <h2>Chat</h2>
+        <!-- Top controls for chat: search and pinned messages -->
+        <div class="chat-top-controls">
+          <input type="text" id="chatSearch" placeholder="Search messages…" />
+          <div id="pinnedMessages" class="pinned-messages"></div>
+        </div>
+        <div id="chatWindow" class="chat-window"></div>
+        <div class="chat-input-area">
+          <!-- Sticker picker toggle -->
+          <button id="stickerButton" title="Stickers">💌</button>
+          <!-- Voice record button -->
+          <button id="recordButton" title="Record voice note">🎤</button>
+          <!-- Attachment button triggers hidden file input -->
+          <label for="chatAttachment" title="Attach image" class="attachment-button">📎</label>
+          <input type="file" id="chatAttachment" accept="image/*" style="display:none" />
+          <!-- Text input for messages -->
+          <input type="text" id="chatInput" placeholder="Type a message…" />
+          <!-- Send message button -->
+          <button id="sendButton">Send</button>
+        </div>
+        <!-- Sticker picker container -->
+        <div id="stickerPicker" class="sticker-picker hidden"></div>
+      </section>
+
+      <!-- Memories Section -->
+      <section id="memories" class="section hidden">
+        <h2>Memories</h2>
+        <form id="memoryForm" class="memory-form">
+          <input type="file" id="memoryFile" accept="image/*" />
+          <input type="text" id="memoryTags" placeholder="Tags (comma-separated)" />
+          <textarea id="memoryText" placeholder="Write a note…"></textarea>
+          <button type="submit">Add Memory</button>
+        </form>
+        <!-- Search memories -->
+        <input type="text" id="memorySearch" placeholder="Search memories…" style="padding: var(--spacing-small); border: 1px solid #ccc; border-radius: 4px; margin-bottom: var(--spacing-small); width: 100%; box-sizing: border-box;" />
+        <div id="memoriesTimeline" class="timeline"></div>
+      </section>
+
+      <!-- Games Section -->
+      <section id="games" class="section hidden">
+        <h2>Games</h2>
+        <div class="game">
+          <h3>Would You Rather?</h3>
+          <p id="wyrQuestion" class="question"></p>
+          <button id="wyrButton">New Question</button>
+        </div>
+        <div class="game">
+          <h3>Truth or Dare</h3>
+          <p id="todQuestion" class="question"></p>
+          <button id="todButton">New Challenge</button>
+        </div>
+      </section>
+
+      <!-- Planning Section -->
+      <section id="planning" class="section hidden">
+        <h2>Planning</h2>
+        <form id="taskForm" class="form-inline">
+          <input type="text" id="taskTitle" placeholder="Task description" required />
+          <input type="datetime-local" id="taskDue" />
+          <button type="submit">Add</button>
+        </form>
+        <ul id="taskList" class="list"></ul>
+
+        <!-- Bucket list section for future experiences -->
+        <h3 style="margin-top: var(--spacing-medium);">Bucket List</h3>
+        <form id="bucketForm" class="form-inline">
+          <input type="text" id="bucketItem" placeholder="Bucket list item" required />
+          <button type="submit">Add</button>
+        </form>
+        <ul id="bucketList" class="list"></ul>
+      </section>
+
+      <!-- Profile Section -->
+      <section id="profile" class="section hidden">
+        <h2>Profile</h2>
+        <form id="profileForm" class="memory-form">
+          <input type="text" id="myName" placeholder="Your name" required />
+          <input type="text" id="partnerName" placeholder="Partner's name" required />
+          <!-- Relationship start date to track how long you have been together -->
+          <label>Relationship start date
+            <input type="date" id="startDate" />
+          </label>
+          <label>Upload your photo
+            <input type="file" id="myPhoto" accept="image/*" />
+          </label>
+          <label>Upload partner's photo
+            <input type="file" id="partnerPhoto" accept="image/*" />
+          </label>
+          <button type="submit">Save Profile</button>
+        </form>
+        <div id="profileDisplay" style="margin-top: var(--spacing-medium);"></div>
+
+        <!-- Backup/restore actions -->
+        <div class="backup-actions" style="margin-top: var(--spacing-medium); display: flex; gap: var(--spacing-small); flex-wrap: wrap;">
+          <button id="exportBackup" type="button">Export Backup</button>
+          <label for="importBackup" class="import-button">Import Backup</label>
+          <input type="file" id="importBackup" accept="application/json" style="display:none" />
+        </div>
+      </section>
+
+      <!-- Interactive Section -->
+      <section id="interactive" class="section hidden">
+        <h2>Interactive</h2>
+        <div class="interactive-item">
+          <h3>Send a Virtual Hug</h3>
+          <button id="hugButton">🤗 Hug</button>
+          <div id="hugAnimation" class="hug-animation"></div>
+        </div>
+        <div class="interactive-item">
+          <h3>Love Meter</h3>
+          <button id="loveMeterButton">Check Love Meter</button>
+          <div class="love-meter-container">
+            <div id="loveMeterBar" class="love-meter-bar"></div>
+          </div>
+          <p id="loveMeterResult"></p>
+        </div>
+        <div class="interactive-item">
+          <h3>Love Coupon</h3>
+          <button id="couponButton">Generate Coupon</button>
+          <p id="couponResult"></p>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <p>Made with ❤️ for long‑distance couples.</p>
+    </footer>
+
+    <!-- Bottom navigation for small screens -->
+    <nav id="bottomNav" class="bottom-nav">
+      <a href="#dashboard" data-section="dashboard" title="Dashboard">🏠</a>
+      <a href="#calendar" data-section="calendar" title="Calendar">📅</a>
+      <a href="#chat" data-section="chat" title="Chat">💬</a>
+      <a href="#memories" data-section="memories" title="Memories">📖</a>
+      <a href="#games" data-section="games" title="Games">🎮</a>
+      <a href="#planning" data-section="planning" title="Planning">✅</a>
+      <a href="#interactive" data-section="interactive" title="Interactive">✨</a>
+      <a href="#profile" data-section="profile" title="Profile">👤</a>
+    </nav>
+
+    <!-- Lightbox overlay for viewing memory images -->
+    <div id="lightbox" class="lightbox hidden">
+      <span class="lightbox-close">×</span>
+      <img id="lightboxImg" alt="Memory full view" />
+    </div>
+
+    <!-- Onboarding overlay shown on first visit -->
+    <div id="onboarding" class="onboarding hidden">
+      <div class="onboarding-card">
+        <h2>Welcome to LoveConnect 2025</h2>
+        <p>Explore your private space for memories, chat, planning and more – all without logging in.</p>
+        <p>• Add events & notes to your calendar and export them to your favourite calendar app.</p>
+        <p>• Share photos, voice notes and stickers in chat – search and pin important messages.</p>
+        <p>• Keep memories with tags, search them and view photos in a beautiful lightbox.</p>
+        <p>• Plan tasks and your bucket list together, with reminders when things are due.</p>
+        <p>• Personalise your profile and see how long you’ve been together.</p>
+        <button id="onboardingStart">Let’s Start</button>
+      </div>
+    </div>
+  </body>
+</html>
